@@ -1,11 +1,14 @@
 package main
 
 import (
+	"fmt"
 	"os"
 	"strconv"
 	"strings"
 
 	"flag"
+
+	"github.com/docker/docker/client"
 	"github.com/docker/go-plugins-helpers/volume"
 	log "github.com/sirupsen/logrus"
 )
@@ -62,8 +65,15 @@ func main() {
 	log.Debugf("linode-region: %s", *linodeRegionParamPtr)
 	log.Debugf("linode-label: %s", *linodeLabelParamPtr)
 
+	//
+	docker, err := client.NewClient(fmt.Sprintf("unix://%s", *socketAddressParamPtr), "v1.18", nil, map[string]string{"User-Agent": "linode-volume-driver"})
+	if err != nil {
+		panic(err)
+	}
+	defer docker.Close()
+
 	// Driver instance
-	driver := newLinodeVolumeDriver(*linodeRegionParamPtr, *linodeLabelParamPtr, *linodeTokenParamPtr)
+	driver := newLinodeVolumeDriver(*linodeRegionParamPtr, *linodeLabelParamPtr, *linodeTokenParamPtr, docker)
 
 	// Attach Driver to docker
 	handler := volume.NewHandler(&driver)

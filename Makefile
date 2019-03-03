@@ -90,7 +90,6 @@ test-setup:
 
 check:
 	# Tools
-	
 	GO111MODULE=off go get -u github.com/tsenart/deadcode
 	GO111MODULE=off go get -u github.com/kisielk/errcheck
 	GO111MODULE=off go get -u golang.org/x/lint/golint
