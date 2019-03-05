@@ -70,7 +70,7 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	defer docker.Close()
+	defer func() { _ = docker.Close() }()
 
 	// Driver instance
 	driver := newLinodeVolumeDriver(*linodeRegionParamPtr, *linodeLabelParamPtr, *linodeTokenParamPtr, docker)
