@@ -78,7 +78,7 @@ func setupLinodeAPI(token string) *linodego.Client {
 	}
 
 	api := linodego.NewClient(oauth2Client)
-	ua := fmt.Sprintf("docker-volume-linode/%s linodego/%s", VERSION, linodego.Version)
+	ua := fmt.Sprintf("docker-volume-linode/%s", VERSION)
 	api.SetUserAgent(ua)
 	return &api
 }
